@@ -1,5 +1,4 @@
 import * as React from "react";
-
 import { Box, Typography } from "@mui/material";
 import { RootTypes } from "../types/Types";
 import LocationCityIcon from "@mui/icons-material/LocationCity";
@@ -37,7 +36,7 @@ const TabsOverview = (finalData: { finalData: RootTypes[] }) => {
     const cityName = reducer("city");
     const cityCount = sortCount(cityName);
     const sortedCityCount = sortCount(cityCount);
-    const [firstKey, firstValue] = Object.entries(sortedCityCount)[0];
+    const [firstKey] = Object.entries(sortedCityCount)[0];
 
     const vehicleWithMaxRange = finalData.finalData.reduce(
       (maxVehicle, currentVehicle) => {
@@ -60,31 +59,30 @@ const TabsOverview = (finalData: { finalData: RootTypes[] }) => {
         name: firstKey,
         title: "Most EVs in City",
         desc: "City with the highest number of EVs",
-        icon: <LocationCityIcon />,
+        icon: <LocationCityIcon sx={styles.icon} />,
       },
       {
         id: "02",
         name: vehicleWithMaxRange.electricRange,
         title: "Highest EV Range",
         desc: `Provided by ${vehicleWithMaxRange.make}`,
-        icon: <LocationCityIcon />,
+        icon: <BatteryChargingFullIcon sx={styles.icon} />,
       },
       {
         id: "03",
         name: "Battery Electric Vehicle",
         title: "Electric Vehicle Type",
         desc: "City with the highest number of EVs",
-        icon: <LocationCityIcon />,
+        icon: <TrendingUpIcon sx={styles.icon} />,
       },
       {
         id: "04",
         name: mostRepeatedMake.make,
         title: "Electric Type ",
         desc: "Most electric type provided by makers",
-        icon: <LocationCityIcon />,
+        icon: <ElectricCarIcon sx={styles.icon} />,
       },
     ];
-
     setTabDetails(tabsObject);
   };
 
@@ -92,61 +90,71 @@ const TabsOverview = (finalData: { finalData: RootTypes[] }) => {
     finalData.finalData && makeNames();
   }, []);
   return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        gap: 5,
-        padding: "10px 10px",
-        flexWrap: "wrap",
-      }}
-    >
+    <Box sx={styles.container}>
       {tabDetails &&
-        tabDetails.map((item: any) => (
-          <Box
-            sx={{
-              boxShadow: 1,
-              width: { lg: "22%", sm: "45%", xs: "100%" },
-              borderRadius: "10px",
-              height: "100px",
-              bgcolor: "white",
-              display: "flex",
-              alignItems: "center",
-              padding: "0px 10px",
-              boxSizing: "border-box",
-              justifyContent: "space-around",
-              gap: 1,
-            }}
-          >
-            <Box
-              sx={{
-                height: "100%",
-                width: "80%",
-                gap: 1,
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-              }}
-            >
-              <Typography sx={{ fontSize: 10, color: "black" }}>
-                {item.title}
-              </Typography>
-              <Typography
-                sx={{ fontSize: 15, fontWeight: 600, color: "black" }}
-              >
-                {item.name}
-              </Typography>
-              <Typography sx={{ fontSize: 10, color: "black" }}>
-                {item.desc}
-              </Typography>
+        tabDetails.map((item: any, index: number) => (
+          <Box sx={styles.card} key={index}>
+            <Box sx={styles.cardContent}>
+              <Typography sx={styles.title}>{item.title}</Typography>
+              <Typography sx={styles.name}>{item.name}</Typography>
+              <Typography sx={styles.description}>{item.desc}</Typography>
             </Box>
-            <Box sx={{}}>{item.icon}</Box>
+            <Box>{item.icon}</Box>
             <Box />
           </Box>
         ))}
     </Box>
   );
+};
+
+const styles = {
+  icon: { color: "#00D5D1", fontSize: 30 },
+  container: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 5,
+    padding: "10px 10px",
+    flexWrap: "wrap",
+  },
+  card: {
+    boxShadow: 1,
+    width: { lg: "22%", sm: "45%", xs: "100%" },
+    borderRadius: "10px",
+    height: "100px",
+    bgcolor: "white",
+    display: "flex",
+    alignItems: "center",
+    padding: "0px 10px",
+    boxSizing: "border-box",
+    justifyContent: "space-around",
+    gap: 1,
+  },
+  cardContent: {
+    height: "100%",
+    width: "80%",
+    gap: 1,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+  },
+  title: {
+    fontSize: 10,
+    color: "#8a8989",
+    fontFamily: "sans-serif",
+  },
+  name: {
+    fontSize: 16,
+    fontWeight: 600,
+    color: "#010101",
+    textTransform: "capitalize",
+    fontFamily: "sans-serif",
+  },
+  description: {
+    fontSize: 10,
+    fontFamily: "sans-serif",
+    color: "#8a8989",
+  },
 };
 
 export default TabsOverview;

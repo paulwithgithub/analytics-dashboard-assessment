@@ -1,17 +1,7 @@
 import * as React from "react";
 import { PieChart } from "@mui/x-charts/PieChart";
-import { desktopOS, valueFormatter } from "./ExtendMui.tsx";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { RootTypes } from "../../types/Types.ts";
-const yearData = {};
-
-interface Types {
-  tesla: number;
-  nissan: number;
-  chevrolet: number;
-  bmw: number;
-  ford: number;
-}
 
 export default function MuiPieChart(finalData: { finalData: RootTypes[] }) {
   const [makeDataPieList, setMakeDataPieList] = React.useState<
@@ -87,69 +77,88 @@ export default function MuiPieChart(finalData: { finalData: RootTypes[] }) {
     setCityDataPieList(cityObj);
   };
 
+  const valueFormatter = (item: { value: number }) => `${item.value}%`;
+
   React.useEffect(() => {
     finalData.finalData && makeNames();
   }, []);
   return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        flexWrap: "wrap",
-        gap: 5,
-      }}
-    >
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          width: { md: "45%", sm: "100%", xs: "100%" },
-          boxShadow: 1,
-          borderRadius: "10px",
-        }}
-      >
-        <PieChart
-          series={[
-            {
-              highlightScope: { fade: "global", highlight: "item" },
-              faded: { innerRadius: 30, additionalRadius: -30, color: "gray" },
-              valueFormatter,
-              data: cityDataPieList
-                ? cityDataPieList
-                : [
-                    {
-                      label: "Windows",
-                      value: 72.72,
-                    },
-                  ],
-            },
-          ]}
-          height={200}
-          width={400}
-        />
+    <Box sx={styles.container}>
+      <Box sx={styles.card}>
+        <Box>
+          <Typography sx={styles.title}>Cities using more EV's</Typography>
+        </Box>
+        <Box sx={styles.chartContainer}>
+          <PieChart
+            series={[
+              {
+                highlightScope: { fade: "global", highlight: "item" },
+                faded: {
+                  innerRadius: 30,
+                  additionalRadius: -30,
+                  color: "gray",
+                },
+                valueFormatter,
+                data: cityDataPieList
+                  ? cityDataPieList
+                  : [
+                      {
+                        label: "Windows",
+                        value: 72.72,
+                      },
+                    ],
+              },
+            ]}
+            height={200}
+            width={400}
+          />
+        </Box>
       </Box>
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          width: { md: "45%", sm: "100%", xs: "100%" },
-          boxShadow: 1,
-          borderRadius: "10px",
-        }}
-      >
-        <PieChart
-          series={[
-            {
-              data: makeDataPieList ? makeDataPieList : [],
-            },
-          ]}
-          width={400}
-          height={200}
-        />
+
+      <Box sx={styles.card}>
+        <Box>
+          <Typography sx={styles.title}>Top EV Brands</Typography>
+        </Box>
+        <Box sx={styles.chartContainer}>
+          <PieChart
+            series={[
+              {
+                data: makeDataPieList ? makeDataPieList : [],
+              },
+            ]}
+            width={400}
+            height={200}
+          />
+        </Box>
       </Box>
     </Box>
   );
 }
+
+const styles = {
+  container: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    flexWrap: "wrap",
+    gap: 5,
+  },
+  card: {
+    width: { md: "45%", sm: "100%", xs: "100%" },
+    boxShadow: 1,
+    borderRadius: "10px",
+    padding: 0.5,
+  },
+  title: {
+    color: "#00D5D1",
+    fontSize: 16,
+    fontWeight: 550,
+    paddingLeft: 1,
+    paddingTop: 1,
+  },
+  chartContainer: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+};
