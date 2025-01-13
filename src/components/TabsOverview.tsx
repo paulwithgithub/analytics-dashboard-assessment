@@ -72,14 +72,14 @@ const TabsOverview = (finalData: { finalData: RootTypes[] }) => {
         id: "03",
         name: "Battery Electric Vehicle",
         title: "Electric Vehicle Type",
-        desc: "City with the highest number of EVs",
+        desc: "The most selling battery type",
         icon: <TrendingUpIcon sx={styles.icon} />,
       },
       {
         id: "04",
         name: mostRepeatedMake.make,
-        title: "Electric Type ",
-        desc: "Most electric type provided by makers",
+        title: "Top Company",
+        desc: "Top most brand in selling EV cars",
         icon: <ElectricCarIcon sx={styles.icon} />,
       },
     ];
